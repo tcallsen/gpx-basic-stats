@@ -23,8 +23,7 @@ module.exports = function(inputFile) {
   const statistics = {
     distance: -1,
     duration: -1,
-    elevationGain: -1,
-    // movingTime: -1
+    elevationGain: -1
   }
 
   // parse GPX to GeoJSON and extract relevant data
@@ -49,15 +48,6 @@ module.exports = function(inputFile) {
   // elevationGain - calculate if elevation data is present
   if (coords[0].length > 2) statistics.elevationGain = gpxCalcElevationGain(inputFile)
  
-  // movingTime - todo
-  /* const slidingLength = 5
-  for (let i = 0; i < coords.length-slidingLength; i+=slidingLength ) {
-  //coords.forEach( (coord, index) => {
-    //if (index == coords.length - 1) return // stop 1 point early since comparison requires 2 points
-    const distance = turf.distance( turf.point(coords[i]) , 
-    turf.point(coords[i+slidingLength]) )
-  } */
-
   return statistics
 
 }
