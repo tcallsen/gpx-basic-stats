@@ -27,20 +27,24 @@ module.exports = function(inputFile) {
     movingTime: -1
   }
 
-  // parse GPX to GeoJSON and extract coords
-  let coords
+  // parse GPX to GeoJSON and extract relevant data
+  let coords, coordTimes
   try {
     var doc = new DOMParser().parseFromString(inputFile)
     const geoJSON = toGeoJSON.gpx(doc)
     coords = geoJSON.features[0].geometry.coordinates
+    coordTimes = geoJSON.features[0].properties.coordTimes
   } catch (e) {
     console.error(e);
-    return -1 // exit if error parsing inputFile
+    return statistics // exit if error parsing inputFile
   }
 
   // distance
   const lineStringGeom = turf.lineString(coords)
   statistics.distance = turf.length(lineStringGeom, {units: 'miles'});
+
+  // duration
+  statistics.duration = Date.parse(coordTimes[coordTimes.length-1]) - Date.parse(coordTimes[0])
 
   // elevation gain - calculate if elevation data is present
   if (coords[0].length > 2) statistics.elevationGain = gpxCalcElevationGain(inputFile)
