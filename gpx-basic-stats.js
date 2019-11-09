@@ -1,9 +1,14 @@
 'use strict';
 
+// praseing gpx
 const toGeoJSON = require('@mapbox/togeojson')
 const DOMParser = require('xmldom').DOMParser
 
+// elevation calc
 const gpxCalcElevationGain = require('gpx-calc-elevation-gain')
+
+// distance calc
+const turf = require('@turf/turf')
 
 /**
  * Returns basic statistics for route in supplied GPX file 
@@ -32,6 +37,10 @@ module.exports = function(inputFile) {
     console.error(e);
     return -1 // exit if error parsing inputFile
   }
+
+  // distance
+  const lineStringGeom = turf.lineString(coords)
+  statistics.distance = turf.length(lineStringGeom, {units: 'miles'});
 
   // elevation gain - calculate if elevation data is present
   if (coords[0].length > 2) statistics.elevationGain = gpxCalcElevationGain(inputFile)
