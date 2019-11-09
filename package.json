@@ -1,0 +1,19 @@
+{
+  "name": "gpx-basic-stats",
+  "version": "0.1.0",
+  "description": "Calculates basic statistics for GPX routes",
+  "main": "gpx-basic-stats.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.dev.gritto.net:8888/taylor/gpx-basic-stats.git"
+  },
+  "author": "Taylor Callsen <taylor.callsen@gmail.com> (https://taylor.callsen.me/)",
+  "license": "ISC",
+  "dependencies": {
+    "@mapbox/togeojson": "^0.16.0",
+    "gpx-calc-elevation-gain": "^0.1.3"
+  }
+}
