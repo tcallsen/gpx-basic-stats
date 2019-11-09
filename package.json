@@ -1,6 +1,6 @@
 {
   "name": "gpx-basic-stats",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Calculates basic statistics for GPX routes",
   "main": "gpx-basic-stats.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://git.dev.gritto.net:8888/taylor/gpx-basic-stats.git"
+    "url": "https://github.com/tcallsen/gpx-basic-stats"
   },
   "author": "Taylor Callsen <taylor.callsen@gmail.com> (https://taylor.callsen.me/)",
   "license": "ISC",
