@@ -12,7 +12,7 @@ const turf = require('@turf/turf')
 
 /**
  * Returns basic statistics for route in supplied GPX file 
- * (distance, duration, elevation gain)
+ * (times, distance, duration, elevation gain)
  * 
  * @param {file} inputFile
  * @return {object} statistics
@@ -21,6 +21,8 @@ const turf = require('@turf/turf')
 module.exports = function(inputFile) {
 
   const statistics = {
+    startTime: -1,
+    endTime: -1,
     distance: -1,
     duration: -1,
     elevationGain: -1
@@ -37,6 +39,10 @@ module.exports = function(inputFile) {
     console.error(e);
     return statistics // exit if error parsing inputFile
   }
+
+  // start and end times
+  statistics.startTime = coordTimes[0]
+  statistics.endTime = coordTimes[coordTimes.length-1]
 
   // distance
   const lineStringGeom = turf.lineString(coords)

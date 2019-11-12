@@ -1,6 +1,6 @@
 {
   "name": "gpx-basic-stats",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Calculates basic statistics for GPX routes",
   "main": "gpx-basic-stats.js",
   "scripts": {
