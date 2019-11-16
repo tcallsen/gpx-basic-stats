@@ -25,7 +25,9 @@ module.exports = function(inputFile) {
     endTime: -1,
     distance: -1,
     duration: -1,
-    elevationGain: -1
+    elevationGain: -1,
+    successful: 0,
+    message: null
   }
 
   // parse GPX to GeoJSON and extract relevant data
@@ -36,7 +38,8 @@ module.exports = function(inputFile) {
     coords = geoJSON.features[0].geometry.coordinates
     coordTimes = geoJSON.features[0].properties.coordTimes
   } catch (e) {
-    console.error(e);
+    console.error(e)
+    statistics.message = e.message
     return statistics // exit if error parsing inputFile
   }
 
@@ -54,6 +57,10 @@ module.exports = function(inputFile) {
   // elevationGain - calculate if elevation data is present
   if (coords[0].length > 2) statistics.elevationGain = gpxCalcElevationGain(inputFile)
  
+  // mark as successful
+  statistics.successful = 1
+  statistics.message = "Statistics calculated successfully."
+
   return statistics
 
 }
