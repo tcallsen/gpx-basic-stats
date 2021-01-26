@@ -3,6 +3,17 @@ Computes the distance, duration, and elevation gain for GPX routes.
 
 Elevation data must be supplied in the GPX data (no external elevation APIs are used in the calculcation). The final result will be in the same units as the source data (e.g. meters, feet).
 
+## Publishing to Internal @gritto NPM Registry
+
+This build published to the @gritto NPM Registry at `dev.gritto.net`. Ensure your `~/.npmrc` file contains configuration for this namespace:
+
+```
+; @gritto NPM registry publish (per project)
+//dev.gritto.net/api/v4/projects/64/packages/npm/:_authToken=<gitlab-gritto-group-deploy-token>
+```
+
+This configuration will overlay the `publishConfig` specified in the `package.json` file with the proper auth token.
+
 ## Installing with NPM
 
 ```
