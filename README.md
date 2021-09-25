@@ -30,7 +30,7 @@ This build is published to the @gritto NPM Registry at `dev.gritto.net`. Ensure 
 
 ```
 ; @gritto NPM registry publish (per project)
-//dev.gritto.net/api/v4/projects/64/packages/npm/:_authToken=<gitlab-gritto-group-deploy-token>
+//dev-npm-publish.gritto.net/api/v4/projects/64/packages/npm/:_authToken=<gitlab-gritto-group-deploy-token>
 ```
 
 This configuration will overlay the `publishConfig` specified in the `package.json` file with the proper auth token.

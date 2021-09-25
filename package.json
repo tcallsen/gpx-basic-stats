@@ -18,6 +18,6 @@
     "gpx-calc-elevation-gain": "^0.1.3"
   },
   "publishConfig": {
-    "@gritto:registry": "https://dev.gritto.net/api/v4/projects/64/packages/npm/"
+    "@gritto:registry": "https://dev-npm-publish.gritto.net/api/v4/projects/64/packages/npm/"
   }
 }
