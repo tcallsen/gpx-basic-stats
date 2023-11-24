@@ -4,8 +4,7 @@
   "description": "Calculates basic statistics for GPX routes",
   "main": "gpx-basic-stats.js",
   "scripts": {
-    "test": "jest",
-    "prepublish": "test"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
