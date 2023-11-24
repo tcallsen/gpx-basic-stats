@@ -31,12 +31,26 @@ module.exports = function(inputFile) {
   }
 
   // parse GPX to GeoJSON and extract relevant data
-  let coords, coordTimes
+  let coords = [];
+  let coordTimes = [];
   try {
     var doc = new DOMParser().parseFromString(inputFile)
     const geoJSON = toGeoJSON.gpx(doc)
-    coords = geoJSON.features[0].geometry.coordinates
-    coordTimes = geoJSON.features[0].properties.coordTimes
+
+    // NOTE: only first feature is read
+    const feature = geoJSON.features[0];
+
+    // special handling for GPX files with multiple trkseg (e.g. Gaia creates these if pausing track
+    //  recording) which will have their coords and coordTimes concatenated together
+    if (feature.geometry.type === 'MultiLineString') {
+      feature.geometry.coordinates.forEach((coordArray) => coords = coords.concat(coordArray));
+      feature.properties.coordTimes.forEach((coordTimeArray) => coordTimes = coordTimes.concat(coordTimeArray));
+    } else {
+      // regular gpx files handled here
+      coords = geoJSON.features[0].geometry.coordinates;
+      coordTimes = geoJSON.features[0].properties.coordTimes;  
+    }
+
   } catch (e) {
     console.error(e)
     statistics.message = e.message

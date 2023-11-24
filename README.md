@@ -24,6 +24,13 @@ const statistics = gpxBasicStats( sampleFile )
 console.log( statistics )
 ```
 
+## Developing
+
+```
+nvm use
+npm install
+```
+
 ## Publishing to Internal @gritto NPM Registry
 
 This build is published to the @gritto NPM Registry at `dev.gritto.net`. Ensure your `~/.npmrc` file contains configuration for this namespace:
