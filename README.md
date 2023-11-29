@@ -1,7 +1,8 @@
 # Compute basic statistics for GPX routes 
-Computes the distance, duration, and elevation gain for GPX routes. 
 
-Elevation data must be supplied in the GPX data (no external elevation APIs are used in the calculcation). The final result will be in the same units as the source data (e.g. meters, feet).
+Computes the distance, duration, and elevation gain for GPX routes.
+
+Statistics are created for each `trkseg` in a GPX file (most GPX files have a single `trkseg`). Elevation data must be supplied in the GPX data (no external elevation APIs are used in the calculcation). The final result will be in the same units as the source data (e.g. meters, feet).
 
 ## Installing with NPM
 
@@ -20,15 +21,30 @@ const sampleFile = fs.readFileSync('./sample_data/Sample_Joaquin_Miller.gpx', 'u
 
 // calculate elevation (in same units as source data)
 const statistics = gpxBasicStats( sampleFile )
-
-console.log( statistics )
 ```
 
-## Developing
+Returns an array of statistics calcuations, one for each `trkseg` in the GPX file. For example:
+
+```
+[
+  {
+    startTime: "2019-11-02T17:49:50Z",
+    endTime: "2019-11-02T19:15:26Z",
+    distance: 2.83252139802459,
+    duration: 5136000,
+    elevationGain: 172.90000000000026,
+    successful: 1,
+    message: "Statistics calculated successfully.",
+  }
+]
+```
+
+## Develop / Test
 
 ```
 nvm use
 npm install
+npm test
 ```
 
 ## Publishing to Internal @gritto NPM Registry
