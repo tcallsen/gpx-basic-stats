@@ -4,23 +4,19 @@
 const toGeoJSON = require('@mapbox/togeojson')
 const DOMParser = require('xmldom').DOMParser
 
-// elevation calc
-const { calculateCoordsElevation } = require('gpx-calc-elevation-gain')
-
-// distance calc
-const turf = require('@turf/turf')
+const { computeStats, mergeStats } = require('./lib/statsUtil');
 
 /**
- * Returns basic statistics for route in supplied GPX file 
- * (times, distance, duration, elevation gain)
+ * Returns basic statistics for route in supplied GPX file (times, distance, duration, elevation gain).
  * 
- * @param {file} inputFile
- * @return {object} statistics
- *
+ * @param {file} inputFile gpx file
+ * @param {boolean} mergeStatObjects if true, will merge all stat objects for gpx files with multiple
+ *  trkseg into single stats object
+ * @return {object[]} array of stat objects, one for each trkseg in the gpx file
  */
-module.exports = function(inputFile) {
+module.exports = function(inputFile, mergeStatObjects = false) {
 
-  const statisticsArray = [];
+  let statisticsArray = [];
 
   // parse GPX to GeoJSON and extract relevant data
   let coords = [];
@@ -44,6 +40,11 @@ module.exports = function(inputFile) {
         coordTimes = feature.properties.coordTimes[index];
         statisticsArray.push(computeStats(coords, coordTimes));
       });
+
+      // optionally merge all stats objects in statisticsArray into a single stats object
+      if (mergeStatObjects) {
+        statisticsArray = [ mergeStats(statisticsArray) ];
+      }
     } else {
       // regular gpx files with single trkseg handled here
       coords = geoJSON.features[0].geometry.coordinates;
@@ -58,36 +59,4 @@ module.exports = function(inputFile) {
   }
 
   return statisticsArray;
-}
-
-const computeStats = function(coords, coordTimes) {
-  const statistics = {
-    startTime: -1,
-    endTime: -1,
-    distance: -1,
-    duration: -1,
-    elevationGain: -1,
-    successful: 0,
-    message: null
-  }
-  
-  // start and end times
-  statistics.startTime = coordTimes[0]
-  statistics.endTime = coordTimes[coordTimes.length-1]
-
-  // distance
-  const lineStringGeom = turf.lineString(coords)
-  statistics.distance = turf.length(lineStringGeom, {units: 'miles'});
-
-  // duration
-  statistics.duration = Date.parse(coordTimes[coordTimes.length-1]) - Date.parse(coordTimes[0])
-
-  // elevationGain - calculate if elevation data is present
-  if (coords[0].length > 2) statistics.elevationGain = calculateCoordsElevation(coords)
-
-  // mark as successful
-  statistics.successful = 1
-  statistics.message = "Statistics calculated successfully."
-
-  return statistics
 }
