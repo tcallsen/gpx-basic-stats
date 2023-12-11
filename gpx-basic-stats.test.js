@@ -9,7 +9,7 @@ const fs = require('fs')
 
 describe('gpxBasicStats', () => {
 
-  test('gpx file', () => {
+  test('calc stats', () => {
     const gpxFileA = fs.readFileSync('./sample_data/Sample_Joaquin_Miller.gpx', 'utf8')
     const statsA = gpxBasicStats( gpxFileA )
     assert.deepEqual(statsA, [
@@ -46,6 +46,49 @@ describe('gpxBasicStats', () => {
         endTime: "2023-09-10T18:29:05Z",
         message: "Statistics calculated successfully.",
         startTime: "2023-09-10T15:20:48Z",
+        successful: 1,
+      }
+    ])
+  });
+
+  // e.g. manually created/edited in QGIS etc.
+  test('gpx file - no time entries', () => {
+    const gpxFileB = fs.readFileSync('./sample_data/day-2-views-loop-actual.gpx', 'utf8')
+    const statsB = gpxBasicStats( gpxFileB )
+    assert.deepEqual(statsB, [
+      {
+        distance: 106.7075181286904,
+        duration: -1,
+        elevationGain: 27585,
+        endTime: -1,
+        message: "Statistics calculated successfully.",
+        startTime: -1,
+        successful: 1
+      }
+    ])
+  });
+
+  // e.g. manually created/edited in QGIS etc.
+  test('gpx file with multiple trkseg - no time entries', () => {
+    const gpxFileB = fs.readFileSync('./sample_data/day-2-views-loop-actual-multi.gpx', 'utf8')
+    const statsB = gpxBasicStats( gpxFileB )
+    assert.deepEqual(statsB, [
+      {
+        distance: 106.7075181286904,
+        duration: -1,
+        elevationGain: 27585,
+        endTime: -1,
+        message: "Statistics calculated successfully.",
+        startTime: -1,
+        successful: 1
+      },
+      {
+        distance: 106.7075181286904,
+        duration: -1,
+        elevationGain: 27585,
+        endTime: -1,
+        message: "Statistics calculated successfully.",
+        startTime: -1,
         successful: 1
       }
     ])
@@ -82,9 +125,27 @@ describe('gpxBasicStats with mergeStats=true', () => {
         elevationGain: 3959.056372070313,
         endTime: "2023-09-10T18:29:05.000Z",
         message: "Statistics calculated successfully.",
-        startTime: "2023-09-10T14:37:51.000Z",
+        startTime: "2023-09-10T14:37:51Z",
+        successful: 1,
+      }
+    ])
+  });
+
+  // e.g. manually created/edited in QGIS etc.
+  test('gpx file with multiple trkseg - no time entries', () => {
+    const gpxFileB = fs.readFileSync('./sample_data/day-2-views-loop-actual-multi.gpx', 'utf8')
+    const statsB = gpxBasicStats( gpxFileB, true )
+    assert.deepEqual(statsB, [
+      {
+        distance: 213.4150362573808,
+        duration: -1,
+        elevationGain: 55170,
+        endTime: -1,
+        message: "Statistics calculated successfully.",
+        startTime: -1,
         successful: 1
       }
     ])
   });
+
 });

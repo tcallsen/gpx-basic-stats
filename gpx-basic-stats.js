@@ -32,12 +32,15 @@ module.exports = function(inputFile, mergeStatObjects = false) {
     //  recording) which will have their coords and coordTimes concatenated together
     if (feature.geometry.type === 'MultiLineString') {
       
-      if (feature.geometry.coordinates.length !== feature.properties.coordTimes.length) {
+      if (feature.properties.coordTimes && (feature.geometry.coordinates.length !== feature.properties.coordTimes.length)) {
         throw new Error('geojson feature does not contain same number of geometries and coordinate times - aborting');
       }
       
       feature.geometry.coordinates.forEach((coords, index) => {
-        coordTimes = feature.properties.coordTimes[index];
+        // times may not exist in manually created GPX files
+        coordTimes = feature.properties.coordTimes && Array.isArray(feature.properties.coordTimes) ? 
+          feature.properties.coordTimes[index] :
+          null ;
         statisticsArray.push(computeStats(coords, coordTimes));
       });
 
@@ -48,7 +51,8 @@ module.exports = function(inputFile, mergeStatObjects = false) {
     } else {
       // regular gpx files with single trkseg handled here
       coords = geoJSON.features[0].geometry.coordinates;
-      coordTimes = geoJSON.features[0].properties.coordTimes;
+      // times may not exist in manually created GPX files
+      coordTimes = geoJSON.features[0].properties.coordTimes || null;
       statisticsArray.push(computeStats(coords, coordTimes));
     }
 
